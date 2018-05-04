@@ -1,0 +1,16 @@
+{
+  "name": "treehouse-project-11",
+  "version": "1.0.0",
+  "description": "REST API on Express and MongoDB",
+  "main": "src/app.js",
+  "author": "Max Eremin",
+  "license": "MIT",
+  "dependencies": {
+    "mongoose": "^5.0.17",
+    "mongoose-seeder": "^1.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ermaxnet/treehouse-project-11.git"
+  }
+}
