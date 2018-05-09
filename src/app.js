@@ -1,25 +1,25 @@
-const mongoose = require("mongoose");
-const source = require("../source/data.json");
-const User = require("./models/user")(mongoose),
-    Review = require("./models/review")(mongoose),
-    Course = require("./models/course")(mongoose);
-const seeder = require("mongoose-seeder")(mongoose);
+const express = require("express"),
+   bodyParser = require("body-parser");
 
-mongoose.connect("mongodb://localhost:27017/rest");
+const ApiError = require("./errors/custom-error");
 
-mongoose.connection.on("connected", () => {
-    console.log("MongoDB was connected");
-    Course.find().exec((err, user) => {
-        console.log(user);
-        process.exit(1);
-    });
-    /* seeder.seed(source, { dropDatabase: false, dropCollections: true })
-        .then(data => {
-            
-            
-        })
-        .catch(err => {
-            console.error(err);
-            process.exit(0);
-        }); */
+const app = express();
+app.set("port", process.env.PORT || 3000);
+app.set("json spaces", 40);
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use("/api", require("./routes/user")(express.Router()));
+app.use("/api", require("./routes/course")(express.Router()));
+
+app.use((err, req, res, next) => {
+    if(err instanceof ApiError) {
+        res.status(err.statusCode);
+    } else {
+        res.status(400);
+    }
+    res.json({ success: false, error: err.message });
 });
+
+module.exports = app;

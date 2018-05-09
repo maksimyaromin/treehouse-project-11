@@ -5,12 +5,24 @@
   "main": "src/app.js",
   "author": "Max Eremin",
   "license": "MIT",
+  "scripts": {
+    "test": "NODE_ENV=test mocha test/**/*.test.js"
+  },
   "dependencies": {
-    "mongoose": "^5.0.17",
-    "mongoose-seeder": "^1.2.1"
+    "basic-auth": "^2.0.0",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "mais-mongoose-seeder": "^1.0.3",
+    "mongoose": "^5.0.17"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ermaxnet/treehouse-project-11.git"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.1.1",
+    "supertest": "^3.0.0"
   }
 }
