@@ -7,7 +7,7 @@ const User = require("./models/user")(mongoose),
 module.exports = {
     connect(env) {
         const namespace = env.NODE_ENV === "test" ? "courses-test" : "courses";
-        return mongoose.connect(`mongodb://localhost:27017/${namespace}`)
+        return mongoose.connect(`mongodb://localhost:27017/${namespace}`, { autoIndex: false })
             .then(() => {
                 return env.NODE_ENV === "production" 
                     ? Promise.resolve()
@@ -17,6 +17,9 @@ module.exports = {
                         });
             })
             .then(() => {
+                return User.ensureIndexes();
+            })
+            .then(() => {
                 console.log("Connection to database was established.");
                 return Promise.resolve();
             })
@@ -24,6 +27,9 @@ module.exports = {
                 console.log("Can not connect to database.");
                 return Promise.reject(err);
             });
+    },
+    disconnect() {
+        return mongoose.connection.close();
     },
     models: {
         User, Review, Course

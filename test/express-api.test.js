@@ -1,8 +1,9 @@
 const supertest = require("supertest");
-const { connect } = require("../src/database");
+const { connect, disconnect } = require("../src/database");
 
 const TEST_CREDENTIALS = "am9lQHNtaXRoLmNvbTpwYXNzd29yZA=="; //joe@smith.com:password
 const TEST_EMAIL = "joe@smith.com";
+const TEST_COURSE_ID = "57029ed4795118be119cc43d";
 
 describe("Express API", () => {
     let request = null;
@@ -61,9 +62,57 @@ describe("Express API", () => {
                     expect(res.body)
                         .to.have.property("success").with
                         .to.be.equal(false);
+                    expect(res.body)
+                        .to.have.property("code").with
+                        .to.be.equal(11000);
                     done();
                 })
                 .catch(err => done(err));
         });
+    });
+
+    describe("GET /api/courses", () => {
+        it("должен вернуть список всех курсов со свойствами _id и title", done => {
+            request.get("/api/courses")
+                .expect(200)
+                .then(res => {
+                    expect(res.body).to.be.a("array");
+                    expect(res.body).to.be.have.lengthOf(2);
+                    res.body.forEach(item => {
+                        expect(item).to.have.property("_id");
+                        expect(item).to.have.property("title");
+                    });
+                    done();
+                })
+                .catch(err => done(err));
+        });
+    });
+
+    describe("GET /api/course/:id", () => {
+        it("Должен вернуть ошибку, если в запрос передать не верный ИД", done => {
+            request.get(`/api/course/007`)
+                .expect(400)
+                .then(() => done())
+                .catch(err => done(err));
+        });
+        it("Должен вернуть один курс, его пользователя и обзоры по переданному ИД", done => {
+            request.get(`/api/course/${TEST_COURSE_ID}`)
+                .expect(200)
+                .then(res => {
+                    expect(res.body)
+                        .to.have.property("_id").with
+                        .to.be.equal(TEST_COURSE_ID);
+                    done();
+                })
+                .catch(err => done(err));
+        });
+    });
+
+    after(done => {
+        disconnect().then(() => process.exit(0))
+            .catch(err => {
+                console.error(err);
+                process.exit(1);
+            });
     });
 });

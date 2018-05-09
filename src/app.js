@@ -19,7 +19,7 @@ app.use((err, req, res, next) => {
     } else {
         res.status(400);
     }
-    res.json({ success: false, error: err.message });
+    res.json({ success: false, error: err.message, code: err.code || -100 });
 });
 
 module.exports = app;
