@@ -1,16 +1,7 @@
 const passport = require("../middleware/passport");
 const { models: { Review, Course } } = require("../database");
-/**
- * 
-POST /api/courses 201 - Creates a course, sets the Location header, and returns no content
-PUT /api/courses/:courseId 204 - Updates a course and returns no content
-POST /api/courses/:courseId/reviews 201 - Creates a review for the specified course ID, sets the Location header to the related course, and returns no content
- */
-/**Use this middleware in the following routes:
-POST /api/courses
-PUT /api/courses/:courseId
-GET /api/users
-POST /api/courses/:courseId/reviews */
+
+/** Описание маршрутов /api/courses && /api/course */
 module.exports = router => {
     router.get("/courses", (req, res, next) => {
         Course.find(null, "title").then(courses => {
@@ -49,9 +40,13 @@ module.exports = router => {
         if(!courseId) {
             return next(new Error("Не передан ИД курса для обновления"));
         }
+        /** Найти запрошенный курс в базе данных */
         Course.findById(courseId)
             .populate("user")
             .then(course => {
+                /** Првоерить, не является ли автором курса текущий авторизованный пользователь. Если является - вернуть
+                 * ошибку, т. к. пользователь не может оставлять отзывы на свои собственные курсы.
+                 */
                 if(course.user._id.equals(req.user._id)) {
                     return Promise.reject(new Error("You can not review your own course, sorry."))
                 }

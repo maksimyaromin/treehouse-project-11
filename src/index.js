@@ -1,3 +1,4 @@
+/* Файл с кодом, запускающим HTTP сервер */
 const { connect } = require("./database"),
               app = require("./app"),
              http = require("http");

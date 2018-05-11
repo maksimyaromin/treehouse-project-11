@@ -1,16 +1,24 @@
 const supertest = require("supertest");
 const { connect, disconnect } = require("../src/database");
 
+/* ВАЖНО: для работы тестов я использовал данные из ващего же файла с тестовыми данными ../source/data.json. Для того,
+    чтобы тесты проходили эти данные автоматически вставляются в тестовую БД. Не меняйте их таким образом, чтобы поломать тесты. */
 const TEST_CREDENTIALS = "am9lQHNtaXRoLmNvbTpwYXNzd29yZA=="; // joe@smith.com:password
 const TEST_REVIEWER_CREDENTIALS = "c2FtQGpvbmVzLmNvbTpwYXNzd29yZA=="; // sam@jones.com:password
 const TEST_EMAIL = "joe@smith.com";
 const TEST_COURSE_ID = "57029ed4795118be119cc43d";
 
+/* В этом файле я привел автоматизированную версию всех запросов, которые вы прописали в файле CourseAPI.postman_collection.json,
+    если хотите, то для теста можете использовать и то и другое */
 describe("Express API", () => {
     let request = null;
 
-    before(done => {
-        connect(process.env).then(() => {
+    /* Прежде чем запустятся все тесты устанавливается подключение к тестовой БД, в нее сидятся данные, запускается Express
+        приложение на 8001 порту и передается в качестве точки входа пакету supertes, который и осуществляет запросы к
+        методам API */
+    before(function(done) {
+        this.timeout(10000);
+        connect({ NODE_ENV: "test" }).then(() => {
             app.listen(8001);
             request = supertest(app);
             done();
@@ -207,11 +215,7 @@ describe("Express API", () => {
         });
     });
 
-    after(done => {
-        disconnect().then(() => process.exit(0))
-            .catch(err => {
-                console.error(err);
-                process.exit(1);
-            });
+    after(function(done) {
+        disconnect().then(done).catch(done);
     });
 });

@@ -5,6 +5,14 @@ const User = require("./models/user")(mongoose),
     Course = require("./models/course")(mongoose);
 
 module.exports = {
+    /**
+     * Функция выполняет подключение к базе данных. Логика работы следующая:
+     * если в качетсве среды используется test, то база будет называться courses-test, если что либо иноее, то courses.
+     * Далее, после установки подключения к MongoDB, если среда не production, то в базу будут загружены тестовые данные
+     * при помощи пакета mais-mongoose-seeder. После будут установлены индекса модели User и возвращен промис.
+     * 
+     * @param {Object} env переменные окружения
+     */
     connect(env) {
         const namespace = env.NODE_ENV === "test" ? "courses-test" : "courses";
         return mongoose.connect(`mongodb://localhost:27017/${namespace}`, { autoIndex: false })
@@ -29,7 +37,11 @@ module.exports = {
             });
     },
     disconnect() {
-        return mongoose.connection.close();
+        return mongoose.connection.close()
+            .then(() => {
+                console.log("Connection to database was closed.");
+                return Promise.resolve();
+            });
     },
     models: {
         User, Review, Course
