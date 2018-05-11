@@ -1,24 +1,24 @@
 # Build a Course Rating API With Express
-Проект представляет собой пример возможной реализации простого API при помощи Express и Mongo.DB.
+The project is an example of the possible implementation of a simple API with a help of Express and Mongo.DB.
 
-В проекте используется пакет Mongoose. Для загрузки в проект тестовых данных используется .json файл, который находится по пути *source/data.json*. Загрузка данных производится при помощи пакета mongoose-seeder. Не могу не отметить, что этот пракет у меня не заработал с новой версией Mongoose. Я написал собственный пакет на основе предложенного в Treehouse, который работает точно так же как и первый. Если вам интересно, то ссылка почитайте подробнее [mais-mongoose-seeder](https://www.npmjs.com/package/mais-mongoose-seeder).
+The project uses Mongoose package. For test data download .json file is used, which s in *source/data.json* folder. Data is loading by mongoose-seeder package. I should note that this project did not run with the new version of Mongoose. I wrote my own package which is based on package proposed by Treehouse, and which works exactly like the first one. In case you need details you can find it here [mais-mongoose-seeder](https://www.npmjs.com/package/mais-mongoose-seeder).
 
-Прошу не забыть восстановить зависимости командой
+Please do not forget to restore dependences with a command
 ```shell
     npm install
 ```
-прежде любых других действий с API.
+before any actions with API.
 
-API разработано согласно техническому заданию. Оно запускается при помощи пакета nodemon командой
+API is developed according to the technical task. It is starts by nodemon package with the command
 ```shell
     npm start
 ```
-или любым другим известным вам способом. К API подключен HTTP-логгер morgan, который пишет логи в файл *logs.log*, расположенный в корне проекта.
+or any other method known to you. HTTP-logger morgan is connected to API, which writes logs to a file *logs.log*, which is situated in project root.
 
-Для удобства я покрыл API автоматическими тестами при помощи Mocha, Chai и пакета [supertest](https://www.npmjs.com/package/supertest). Для запуска тестов наберите в консоли
+For convenience, I covered the API with automatic tests using Mocha, Chai and the package [supertest](https://www.npmjs.com/package/supertest). TO start the test type in console
 ```shell
     npm test
 ```
-С тестами можно ознакомится по пути *test/express-api.test.js*. И разумеется вы можете тестировать при помощи Postman, Fiddler или чего угодно. Для автотестов создается отдельная база данных в которую подкгружаются тестовые данные. Это, вместо возможности мокать данные, сделано мной намеренно для максимального подобия тем тестам, которые вы предложили для Postman.
+Test details you can find in *test/express-api.test.js*. Surely you can test with a help of Postman, Fiddler or any other you get used to. For autotesting, a separate database is created in which the test data is loaded. I did this  intentionally instead of mock data to maximize the similarity to the tests you proposed for Postman.
 
 ### I hope you will enjoy it. Max Eremin

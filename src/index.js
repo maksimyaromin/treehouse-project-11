@@ -1,4 +1,4 @@
-/* Файл с кодом, запускающим HTTP сервер */
+/* A file with the code that runs the HTTP server */
 const { connect } = require("./database"),
               app = require("./app"),
              http = require("http");

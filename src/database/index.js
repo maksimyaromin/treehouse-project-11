@@ -6,12 +6,12 @@ const User = require("./models/user")(mongoose),
 
 module.exports = {
     /**
-     * Функция выполняет подключение к базе данных. Логика работы следующая:
-     * если в качетсве среды используется test, то база будет называться courses-test, если что либо иноее, то courses.
-     * Далее, после установки подключения к MongoDB, если среда не production, то в базу будут загружены тестовые данные
-     * при помощи пакета mais-mongoose-seeder. После будут установлены индекса модели User и возвращен промис.
+     * The function connects to the database. The logic is as follows:
+     * if test is used as the environment, then the base will be called courses-test, if other, then it will be called courses.
+     * After installing the connection to MongoDB, if the environment is not production, then the test data will be loaded into the database
+     * with a help of mais-mongoose-seeder package. Then User model indexes will be installed and the promise will be returned.
      * 
-     * @param {Object} env переменные окружения
+     * @param {Object} env environment variables
      */
     connect(env) {
         const namespace = env.NODE_ENV === "test" ? "courses-test" : "courses";
@@ -28,7 +28,7 @@ module.exports = {
                 return User.ensureIndexes();
             })
             .then(() => {
-                console.log("Connection to database was established.");
+                console.log("Connection to database is established.");
                 return Promise.resolve();
             })
             .catch(err => {

@@ -2,7 +2,7 @@ const auth = require("basic-auth");
 const { models: { User } } = require("../database");
 const ApiError = require("../errors/custom-error");
 
-/** Обработчик, производяший авторизацию пользователя на основе заколовка Authorization Basic */
+/** Handler authorizes the user on the basis of header Authorization Basic */
 module.exports = (req, res, next) => {
     const credentials = auth(req);
     if(!credentials) {

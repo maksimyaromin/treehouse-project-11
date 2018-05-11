@@ -1,7 +1,7 @@
 const passport = require("../middleware/passport");
 const { models: { Review, Course } } = require("../database");
 
-/** Описание маршрутов /api/courses && /api/course */
+/** Rout description /api/courses && /api/course */
 module.exports = router => {
     router.get("/courses", (req, res, next) => {
         Course.find(null, "title").then(courses => {
@@ -11,7 +11,7 @@ module.exports = router => {
     router.get("/course/:id", (req, res, next) => {
         const courseId = req.params.id;
         if(!courseId) {
-            return next(new Error("Не передан ИД запрашиваемого курса"));
+            return next(new Error("The requested course ID is not sent"));
         }
         Course.findById(courseId)
             .populate({ path: "user", select: "fullName" })
@@ -29,7 +29,7 @@ module.exports = router => {
     router.put("/courses/:id", passport, (req, res, next) => {
         const courseId = req.params.id;
         if(!courseId) {
-            return next(new Error("Не передан ИД курса для обновления"));
+            return next(new Error("Course ID is not sent for update"));
         }
         Course.update({ _id: courseId }, req.body)
             .then(() => res.status(204).end())
@@ -38,14 +38,14 @@ module.exports = router => {
     router.post("/courses/:id/reviews", passport, (req, res, next) => {
         const courseId = req.params.id;
         if(!courseId) {
-            return next(new Error("Не передан ИД курса для обновления"));
+            return next(new Error("Course ID is not sent for update"));
         }
-        /** Найти запрошенный курс в базе данных */
+        /** Find the requested course in data base */
         Course.findById(courseId)
             .populate("user")
             .then(course => {
-                /** Првоерить, не является ли автором курса текущий авторизованный пользователь. Если является - вернуть
-                 * ошибку, т. к. пользователь не может оставлять отзывы на свои собственные курсы.
+                /** Check if the author of the course is the current authorized user. If it is true - return an error,
+                 * as far as the user can not leave feedback on his own courses
                  */
                 if(course.user._id.equals(req.user._id)) {
                     return Promise.reject(new Error("You can not review your own course, sorry."))
