@@ -21,4 +21,7 @@ For convenience, I covered the API with automatic tests using Mocha, Chai and th
 ```
 Test details you can find in *test/express-api.test.js*. Surely you can test with a help of Postman, Fiddler or any other you get used to. For autotesting, a separate database is created in which the test data is loaded. I did this  intentionally instead of mock data to maximize the similarity to the tests you proposed for Postman.
 
+#### Notes
+Please, use latest version of Node.JS for this project.
+
 ### I hope you will enjoy it. Max Eremin
