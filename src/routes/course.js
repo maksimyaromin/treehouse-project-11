@@ -50,10 +50,12 @@ module.exports = router => {
                 if(course.user._id.equals(req.user._id)) {
                     return Promise.reject(new Error("You can not review your own course, sorry."))
                 }
-                return Review.create({
-                    ...req.body,
-                    user: { _id: req.user._id }
-                });
+                const review = req.body;
+                if(!review) {
+                    return Promise.reject(new Error("Please, send review for course."));
+                }
+                review.user = { _id: req.user._id };
+                return Review.create(review);
             })
             .catch(review => {
                 return Course.update(
