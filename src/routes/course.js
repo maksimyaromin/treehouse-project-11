@@ -8,7 +8,7 @@ module.exports = router => {
             res.status(200).json(courses);
         }).catch(err => next(err));
     });
-    router.get("/course/:id", (req, res, next) => {
+    router.get("/courses/:id", (req, res, next) => {
         const courseId = req.params.id;
         if(!courseId) {
             return next(new Error("The requested course ID is not sent"));
@@ -57,7 +57,7 @@ module.exports = router => {
                 review.user = { _id: req.user._id };
                 return Review.create(review);
             })
-            .catch(review => {
+            .then(review => {
                 return Course.update(
                     { _id: courseId }, 
                     { $push: { reviews: { _id: review._id } } }

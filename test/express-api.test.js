@@ -98,15 +98,15 @@ describe("Express API", () => {
         });
     });
 
-    describe("GET /api/course/:id", () => {
+    describe("GET /api/courses/:id", () => {
         it("should return an error if the request fails to pass the valid ID", done => {
-            request.get(`/api/course/007`)
+            request.get(`/api/courses/007`)
                 .expect(400)
                 .then(() => done())
                 .catch(err => done(err));
         });
         it("should return one course, its user and reviews on the sent ID", done => {
-            request.get(`/api/course/${TEST_COURSE_ID}`)
+            request.get(`/api/courses/${TEST_COURSE_ID}`)
                 .expect(200)
                 .then(res => {
                     expect(res.body)
